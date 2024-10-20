@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendance', function (Blueprint $table) {
+        Schema::create('timesheets', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id', 255);
-            $table->string('status')->nullable();
-            $table->string('type');
+            $table->integer('user_id');
+            $table->enum('type', ['checkin', 'checkout']);
+            $table->enum('status', ['success', 'pending', 'approve', 'reject'])->default('pending');
             $table->timestamp('date');
+            $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendance');
+        Schema::dropIfExists('timesheets');
     }
 };

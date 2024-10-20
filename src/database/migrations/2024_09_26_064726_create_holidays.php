@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title', 255);
             $table->date('start');
             $table->date('end');
-            $table->char('color', 7)->default('#FFFFFF');
+            $table->char('color', 7)->default('#FF0000');
             $table->timestamps();
             $table->softDeletes();
         });

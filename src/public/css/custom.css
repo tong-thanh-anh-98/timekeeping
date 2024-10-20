@@ -1,0 +1,40 @@
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.header {
+    background-color: #d3d3d3; /* Màu nền cho header chuyển sang xám nhạt */
+    padding: 10px 20px; /* Khoảng cách bên trong */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ cho header */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center; /* Căn giữa đồng hồ với các mục khác */
+}
+
+#clock {
+    font-size: 24px; /* Kích thước chữ cho đồng hồ */
+    color: black; /* Màu chữ */
+    margin-right: 20px; /* Khoảng cách bên phải */
+    font-family: 'Arial', sans-serif; /* Font chữ */
+    background-color: rgba(255, 255, 255, 0.2); /* Nền mờ */
+    padding: 5px 15px; /* Khoảng cách bên trong */
+    border-radius: 5px; /* Bo góc */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Viền nhẹ */
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center; /* Căn giữa các mục trong navbar */
+}
+
+.header-profile img {
+    border-radius: 50%; /* Làm tròn hình ảnh người dùng */
+}
