@@ -94,8 +94,10 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
+            // 'expire' => 60,
+            'expire' => 10, // Đặt thời gian hết hạn là 10 phút
+            // 'throttle' => 60,
+            'throttle' => 60, // Số lần gửi lại token trong 60 phút
         ],
     ],
 

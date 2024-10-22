@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="#">User</a></li>
+            <li class="breadcrumb-item active"><a href="{{ route('user.list') }}">User</a></li>
             <li class="breadcrumb-item"><a href="#">Detail</a></li>
         </ol>
     </div>
@@ -15,7 +15,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Form Detail</h4>
+                    <h4 class="card-title">Form Detail User</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-validation">
@@ -80,5 +80,5 @@
     </div>
 </div>
 <!-- Modal Delete Confirmation -->
-@include('user.delete_user_modal')
+@include('user.delete-modal')
 @endsection

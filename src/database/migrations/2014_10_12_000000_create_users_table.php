@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('role')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('is_password_changed')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

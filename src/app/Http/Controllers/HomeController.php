@@ -12,6 +12,7 @@ class HomeController extends Controller
     {
         $userId = auth()->id();
         $holidays = Holiday::fetchHolidays();
+
         // Lấy dữ liệu timesheet để hiển thị lên calendar
         $timesheets = Timesheet::getAllUserTimesheets($userId);
         
@@ -51,6 +52,6 @@ class HomeController extends Controller
             Timesheet::create($data);
         }
 
-        return response()->json(['success' => true, 'message' => 'Attendance recorded successfully.']);
+        return response()->json(['success' => true, 'message' => 'Recorded timesheet successfully.']);
     }
 }

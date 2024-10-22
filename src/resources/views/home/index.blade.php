@@ -13,6 +13,7 @@
         </div>
     </div>
 </div>
+{{-- @include('home.timesheet-modal') --}}
 <!-- Check In/Out Modal -->
 <div class="modal fade" id="checkInOutModal" tabindex="-1" role="dialog" aria-labelledby="checkInOutModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -27,9 +28,11 @@
                     <div class="mb-3 row">
                         <label for="type">Type:</label>
                         <select id="type" name="type" class="form-control">
+                            <option value="">Choose</option>
                             <option value="checkin">Check In</option>
                             <option value="checkout">Check Out</option>
                         </select>
+                        <x-error-feedback field="type" />
                     </div>
                     <div class="mb-3 row">
                         <label for="attendanceDate">Date of time:</label>
@@ -52,9 +55,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var holidays = @json($holidays);
 
         // Hiển thị các ngày nghỉ lễ
+        var holidays = @json($holidays);
         var events = holidays.map(holiday => {
             return {
                 title: holiday.title,
@@ -69,15 +72,16 @@
             // Set màu sắc dựa trên trạng thái
             var color;
             if (timesheet.status === 'success') {
-                color = 'green'; // Màu xanh lá cây
+                color = '#00DD00'; // Màu xanh lá cây
             } else if (timesheet.status === 'pending') {
-                color = 'blue'; // Màu xanh dương
+                color = '#FFFF00'; // Màu vàng
             } else if (timesheet.status === 'reject') {
-                color = 'red'; // Màu đỏ
+                color = '#FF0000'; // Màu đỏ
             }
 
             return {
-                title: timesheet.type + ' (' + timesheet.status + ')',
+                // title: timesheet.type + ' (' + timesheet.status + ')',
+                title: timesheet.type,
                 start: timesheet.date,
                 backgroundColor: color
             };
@@ -114,6 +118,24 @@
         $('#checkInOutForm').on('submit', function(e) {
             e.preventDefault();
 
+            // Clear any previous error messages
+            $('x-error-feedback[field="type"]').html('');
+            $('x-error-feedback[field="date"]').html('');
+
+            // Lấy giá trị các trường
+            var type = $('#type').val();
+            var date = $('#attendanceDate').val();
+
+            // Kiểm tra xem các trường có được điền chưa
+            if (!type) {
+                $('x-error-feedback[field="type"]').html('Please select a type.');
+                return;
+            }
+            if (!date) {
+                $('x-error-feedback[field="date"]').html('Please select a date.');
+                return;
+            }
+
             $.ajax({
                 url: '{{ route("home.store") }}',
                 method: 'POST',
@@ -123,25 +145,19 @@
                         alert(response.message);
                         location.reload();
                     } else {
-                        // alert('Failed to record attendance.');
-
-                        // Reset error messages
-                        $('x-error-feedback[field="date"]').html('');
-
-                        // Hiển thị lỗi
-                        if (response.errors) {
-                            if (response.errors.date) {
-                                $('x-error-feedback[field="date"]').html(response.errors.date[0]);
-                            }
-                        }
-                        alert('Failed to record attendance.');
+                        alert('Failed to record timesheet.');
                     }
                 },
                 error: function(xhr) {
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        console.log(xhr.responseJSON.errors); // Xem chi tiết lỗi trong console
-                        if (xhr.responseJSON.errors.date) {
-                            $('x-error-feedback[field="date"]').html(xhr.responseJSON.errors.date[0]);
+                        var errors = xhr.responseJSON.errors;
+
+                        // Hiển thị lỗi cho từng trường
+                        if (errors.type) {
+                            $('x-error-feedback[field="type"]').html(errors.type[0]);
+                        }
+                        if (errors.date) {
+                            $('x-error-feedback[field="date"]').html(errors.date[0]);
                         }
                     } else {
                         alert('Error: ' + xhr.responseText);

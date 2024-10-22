@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="#">User</a></li>
+            <li class="breadcrumb-item active"><a href="{{ route('user.list') }}">User</a></li>
             <li class="breadcrumb-item"><a href="#">List</a></li>
         </ol>
     </div>
@@ -14,11 +14,10 @@
         <div class="col-lg-12">
         <x-alert />
             <div class="card">
-                {{-- <div class="card-header">
+                <div class="card-header">
 
-                </div> --}}
+                </div>
                 <div class="card-body">
-                    <!-- Form tìm kiếm -->
                     <form method="GET" action="{{ route('user.list') }}" class="mb-4">
                         <div class="row">
                             <div class="col-md-4">
@@ -62,7 +61,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Sử dụng component phân trang -->
                     @if ($users->hasPages())
                         @include('components.pagination', ['paginator' => $users])
                     @endif

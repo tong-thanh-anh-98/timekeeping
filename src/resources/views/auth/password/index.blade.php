@@ -8,6 +8,7 @@
     <meta name="description" content="Admin Dashboard">
     <title>@yield('title', 'Forgot Password')</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <link href="{{ asset('vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
@@ -23,15 +24,20 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <h4 class="text-center mb-4">Forgot Password</h4>
-                                    <form action="{{ route('authenticate') }}" method="POST">
+                                    <form action="{{ route('auth.password.store') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Email</strong></label>
                                             <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"  value="{{ old('email') }}" placeholder="Enter your email.">
                                             <x-error-feedback field="email" />
                                         </div>
+                                        <div class="row d-flex justify-content-between mt-4 mb-2">
+                                            <div class="mb-3">
+                                                <a href="{{ route('login') }}"><i class="fa-solid fa-arrow-left-long"></i> Back</a>
+                                            </div>
+                                        </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Send</button>
+                                            <button type="submit" class="btn btn-primary btn-block">Send Password Reset Link</button>
                                         </div>
                                     </form>
                                 </div>

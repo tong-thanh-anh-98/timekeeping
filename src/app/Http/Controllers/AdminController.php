@@ -35,12 +35,13 @@ class AdminController extends Controller
             'email' => $request->email,
             'role' => $request->role,
             'password' => Hash::make($password),
+            'is_password_changed' => false,
         ]);
 
         // Send the email with the generated password
         Mail::to($user->email)->send(new CreateUser($user, $password));
 
-        return redirect()->route('user.list')->with('success', 'Tài khoản đã được tạo, một email đã được gửi đến người dùng.');
+        return redirect()->route('user.list')->with('success', 'account created successfully.');
     }
 
     private function generateRandomPassword($length = 8)
@@ -82,13 +83,13 @@ class AdminController extends Controller
         $user->role = $request->role;
         $user->save();
 
-        return redirect()->route('user.list')->with('success', 'Thông tin người dùng đã được cập nhật.');
+        return redirect()->route('user.list')->with('success', 'account updated successfully.');
     }
 
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('user.list')->with('success', 'User đã được xóa thành công.');
+        return redirect()->route('user.list')->with('success', 'account deleted successfully.');
     }
 }

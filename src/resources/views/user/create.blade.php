@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="#">User</a></li>
+            <li class="breadcrumb-item active"><a href="{{ route('user.list') }}">User</a></li>
             <li class="breadcrumb-item"><a href="#">Create</a></li>
         </ol>
     </div>
@@ -15,7 +15,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Form Validation</h4>
+                    <h4 class="card-title">Form Create User</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-validation">
@@ -24,31 +24,19 @@
                             <div class="row">
                                 <div class="col-xl-12">
                                     <div class="mb-3 row">
-                                        <label class="col-lg-2 col-form-label" for="name">Username
-                                            <span class="text-danger">*</span>
-                                        </label>
+                                        <label class="col-lg-2 col-form-label" for="name">Username <span class="text-danger">*</span></label>
                                         <div class="col-lg-10">
-                                            <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="name" placeholder="Enter a username..">
+                                            <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="name" placeholder="Enter a username...">
                                             <x-error-feedback field="name" />
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
-                                        <label class="col-lg-2 col-form-label" for="email">Email <span class="text-danger">*</span>
-                                        </label>
+                                        <label class="col-lg-2 col-form-label" for="email">Email <span class="text-danger">*</span></label>
                                         <div class="col-lg-10">
-                                            <input type="text" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="email" placeholder="Your valid email..">
+                                            <input type="text" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="email" placeholder="Enter a email...">
                                             <x-error-feedback field="email" />
                                         </div>
                                     </div>
-                                    {{-- <div class="mb-3 row" style="">
-                                        <label class="col-lg-2 col-form-label" for="validationCustom03">Password
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <div class="col-lg-10">
-                                            <input type="password" name="password" class="form-control" id="validationCustom03" placeholder="Choose a safe one..">
-                                            <x-error-feedback field="password" />
-                                        </div>
-                                    </div> --}}
                                     <div class="mb-3 row">
                                         <label class="col-lg-2 col-form-label">Role</label>
                                         <div class="col-sm-9">

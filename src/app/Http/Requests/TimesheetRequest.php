@@ -22,8 +22,20 @@ class TimesheetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:checkin,checkout',
+            // 'type' => 'required|string|in:checkin,checkout',
+            'type' => 'required|in:checkin,checkout',
             'date' => 'required|date',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'type.required' => 'Type is required.',
+            // 'type.string' => 'Type must be a string.',
+            'type.in' => 'Type must be either checkin or checkout.',
+            'date.required' => 'Date is required.',
+            'date.date' => 'Please provide a valid date.',
         ];
     }
 }

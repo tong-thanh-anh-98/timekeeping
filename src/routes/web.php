@@ -13,10 +13,16 @@ Route::get('/login', ctl('Auth', 'index'))->name('login');
 Route::post('/login', ctl('Auth', 'authenticate'))->name('authenticate');
 
 Route::get('/forgot-password', ctl('ForgotPassword', 'index'))->name('auth.password.index');
-Route::get('/forgot-password', ctl('ForgotPassword', 'store'))->name('auth.password.store');
+Route::post('/forgot-password', ctl('ForgotPassword', 'store'))->name('auth.password.store');
+Route::get('/forgot-password/{token}', ctl('ForgotPassword', 'resetForm'))->name('auth.password.resetForm');
+Route::post('/reset-password', ctl('ForgotPassword', 'resetPassword'))->name('auth.password.resetPassword');
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', ctl('Auth', 'logout'))->name('logout');
+
+    Route::get('/change-password', ctl('ChangePassword', 'showChangePasswordForm'))->name('auth.password.change');
+    Route::post('/change-password', ctl('ChangePassword', 'changePassword'))->name('auth.password.update');
+
     Route::get('/', ctl('Home', 'index'))->name('home');
     Route::post('/home/store', ctl('Home', 'store'))->name('home.store');
 

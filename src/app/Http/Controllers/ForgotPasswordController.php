@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Mail\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\ForgotPasswordRequest;
@@ -18,43 +23,56 @@ class ForgotPasswordController extends Controller
 
     public function store(ForgotPasswordRequest $request)
     {
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        $user = User::where('email', $request->email)->first();
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return back()->with(['status' => __($status)]);
+        if (!$user) {
+            throw ValidationException::withMessages(['error' => __('Email not found.')]);
         }
 
-        throw ValidationException::withMessages(['email' => __($status)]);
+        $token = app('auth.password.broker')->createToken($user);
+        $link = route('auth.password.resetForm', ['token' => $token, 'email' => $request->email]);
+        Mail::to($request->email)->send(new PasswordReset($link));
+
+        return back()->with(['success' => __('Password reset link sent.')]);
     }
 
-    public function showResetForm(Request $request, $token = null)
+    public function resetForm(Request $request, $token = null)
     {
-        return view('auth.password.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        return view('auth.password.reset-password')->with([
+            'token' => $token,
+            'email' => $request->email,
+        ]);
     }
 
-    public function reset(ResetPasswordRequest $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
-        // Thực hiện đặt lại mật khẩu
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            throw ValidationException::withMessages(['error' => __('Email not found.')]);
+        }
+
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
+            function ($user) use ($request) {
                 $user->forceFill([
-                    'password' => bcrypt($password),
+                    'password' => Hash::make($request->password),
                 ])->save();
-
-                // Đăng nhập người dùng (tuỳ chọn)
                 Auth::login($user);
+                DB::table('password_reset_tokens')->where('email', $request->email)->delete();
             }
         );
 
         if ($status === Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', __($status));
+            return redirect()->route('login')->with('success', __('Password changed successfully.'));
         }
 
-        return back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
+        // Thêm thông báo cho trường hợp token hết hạn hoặc đã sử dụng
+        if ($status === Password::INVALID_TOKEN || $status === Password::INVALID_USER) {
+            return back()->withInput($request->only('email'))->withErrors(['error' => __('The link is expired or has been used.')]);
+        }
+
+        return back()->withInput($request->only('email'))->withErrors(['error' => __($status)]);
     }
+
 }

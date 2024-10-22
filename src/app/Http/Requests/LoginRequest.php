@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
                 'regex:/[a-z]/', // Must contain at least one lowercase letter
                 'regex:/[A-Z]/', // Must contain at least one uppercase letter
                 'regex:/[0-9]/', // Must contain at least one digit
-                'regex:/[@$!%*?&]/', // Must contain at least one special character
+                'regex:/[@$!%*?&.]/', // Must contain at least one special character
             ],
         ];
     }

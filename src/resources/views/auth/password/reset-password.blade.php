@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Admin Dashboard">
-    <title>@yield('title', 'Login')</title>
+    <title>@yield('title', 'Forgot Password')</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <link href="{{ asset('vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
@@ -23,26 +23,24 @@
                         <div class="row no-gutters">
                             <div class="col-xl-12">
                                 <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign in your account</h4>
-                                    <form action="{{ route('authenticate') }}" method="POST">
+                                    <h4 class="text-center mb-4">Forgot Password</h4>
+                                    <form action="{{ route('auth.password.resetPassword') }}" method="POST">
                                         @csrf
-                                        <div class="mb-3">
-                                            <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"  value="{{ old('email') }}" placeholder="Enter your email.">
-                                            <x-error-feedback field="email" />
-                                        </div>
+                                        <input type="hidden" name="token" value="{{ $token }}">
+                                        <input type="hidden" name="email" value="{{ $email }}">
+
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
                                             <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"  value="{{ old('password') }}" placeholder="Enter your password.">
                                             <x-error-feedback field="password" />
                                         </div>
-                                        <div class="row d-flex justify-content-between mt-4 mb-2">
-                                            <div class="mb-3">
-                                                <a href="{{ route('auth.password.index') }}">Forgot Password?</a>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Confirm Password</strong></label>
+                                            <input type="password" name="password_confirmation" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"  value="{{ old('password_confirmation') }}" placeholder="Confirm your password.">
+                                            <x-error-feedback field="password_confirmation" />
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                                            <button type="submit" class="btn btn-primary btn-block">Change</button>
                                         </div>
                                     </form>
                                 </div>

@@ -19,11 +19,11 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/')->with('success', 'Đăng nhập thành công.');
+            return redirect()->intended('/')->with('success', 'Logged in successfully.');
         }
 
         return back()->withErrors([
-            'error' => 'Email hoặc mật khẩu không chính xác.',
+            'error' => 'Email or password is incorrect.',
         ])->withInput();
     }
 
@@ -33,6 +33,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Đăng xuất thành công.');
+        return redirect('/login')->with('success', 'Logged out successfully.');
     }
 }

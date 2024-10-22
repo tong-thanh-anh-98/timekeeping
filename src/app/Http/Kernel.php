@@ -67,6 +67,8 @@ class Kernel extends HttpKernel
     ];
 
     protected $routeMiddleware = [
+        'auth.password.changed' => \App\Http\Middleware\CheckPasswordChange::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        // 'auth.password.changed' => \App\Http\Middleware\CheckPasswordChange::class,
     ];
 }

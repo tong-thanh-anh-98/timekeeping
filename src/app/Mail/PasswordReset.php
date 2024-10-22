@@ -2,38 +2,30 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 
-class CreateUser extends Mailable
+class PasswordReset extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $password;
+    public $link;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, $password)
+    public function __construct($link)
     {
-        $this->user = $user;
-        $this->password = $password;
+        $this->link = $link;
     }
 
     public function build()
     {
-        return $this->view('emails.notifications.create-user')->
-            with([
-                'name' => $this->user->name,
-                'email' => $this->user->email,
-                'password' => $this->password,
-            ]);
+        return $this->view('emails.password_reset');
     }
 
     /**
@@ -42,7 +34,7 @@ class CreateUser extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Account information notification.',
+            subject: 'Password reset notification email',
         );
     }
 
@@ -52,7 +44,7 @@ class CreateUser extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.notifications.create-user',
+            view: 'emails.notifications.password-reset',
         );
     }
 
